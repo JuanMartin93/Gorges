@@ -2,6 +2,8 @@ import os
 import json
 import sqlite3
 from todo.models import Task
+from flaskext.mysql import MySQL
+from todo import app
 
 # From: https://goo.gl/YzypOI
 def singleton(cls):
@@ -19,9 +21,21 @@ class DB(object):
   """
 
   def __init__(self):
-    self.conn = sqlite3.connect("todo.db", check_same_thread=False)
-    self.create_task_table()
+    # self.conn = sqlite3.connect("todo.db", check_same_thread=False)
+    mysql = MySQL()
+    
+    # MySQL configurations
+    app.config['MYSQL_DATABASE_USER'] = 'juan'
+    app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
+    app.config['MYSQL_DATABASE_DB'] = 'GORGES'
+    app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+    mysql.init_app(app)
 
+    self.cursor = mysql.connect().cursor()
+
+    result = self.create_favorites_table()
+
+    print("result " + str(result))
   def row_cursor(self, cursor): 
     response = []
     for row in cursor: 
@@ -38,19 +52,29 @@ class DB(object):
       )
     return response
 
-  def create_task_table(self):
+  def get_favorites(self): 
+    data = self.cursor.execute("select * from user_favorites;")
+    # print(str(self.cursor.fetchall()))
+
+    return self.cursor.fetchall()
+  
+  def create_favorites_table(self):
     try:
-      self.conn.execute (""" 
-      CREATE TABLE tasks 
-      (
-        DUE_DATE INT NOT NULL,
-        DESCRIPTION TEXT NOT NULL,
-        TAGS TEXT NOT NULL,
-        CREATED_AT INT NOT NULL,
-        ID TEXT PRIMARY KEY NOT NULL,
-        NAME TEXT NOT NULL
-      )
-      """)
+      query = """
+          CREATE TABLE user_favorites 
+          (
+            place_id BIGINT NOT NULL AUTO_INCREMENT,
+            place_name VARCHAR(45) NOT NULL,
+            place_location VARCHAR(45) NULL,
+            PRIMARY KEY (`place_id`)
+          )
+        """
+      
+      self.cursor.execute(query)
+      query = "INSERT INTO user_favorites (place_name, place_location) VALUES (\"Ithaca Falls\", \"3 miles south from west\")"
+      print("query" + query)
+      self.cursor.execute(query)
+
     except Exception as e: print e
 
   def delete_task_table(self):
@@ -81,6 +105,7 @@ class DB(object):
   def get_all_tasks(self): 
     cursor = self.conn.execute("select * from tasks;")
     return self.row_cursor(cursor)
+
 
   def get_task(self, id): 
     cursor = self.conn.execute("""
