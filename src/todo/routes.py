@@ -22,6 +22,7 @@ def get_controller3():
 @app.route('/natural-attractions', methods=['GET'])
 def get_controlle4():
   return jsonify(db.get_favorites())
+<<<<<<< HEAD
 
 
 @app.route('/tasks/all', methods=['DELETE'])
@@ -57,3 +58,6 @@ def delete_all_controller():
 #       id  = request.args.get('id')
 #       db.delete_task(id)
 #     return jsonify({"success": "true"}) 
+=======
+    
+>>>>>>> 5a3c7c29c3f5bb78202a2542dbfd51cc65c963f4

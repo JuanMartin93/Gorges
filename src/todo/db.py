@@ -23,10 +23,10 @@ class DB(object):
   def __init__(self):
     # self.conn = sqlite3.connect("todo.db", check_same_thread=False)
     mysql = MySQL()
-    
+
     # MySQL configurations
-    app.config['MYSQL_DATABASE_USER'] = 'juan'
-    app.config['MYSQL_DATABASE_PASSWORD'] = 'password'
+    app.config['MYSQL_DATABASE_USER'] = 'root'
+    app.config['MYSQL_DATABASE_PASSWORD'] = ''
     app.config['MYSQL_DATABASE_DB'] = 'GORGES'
     app.config['MYSQL_DATABASE_HOST'] = 'localhost'
     mysql.init_app(app)
@@ -35,9 +35,14 @@ class DB(object):
 
     # result = self.create_favorites_table()
 
+<<<<<<< HEAD
   def row_cursor(self, cursor): 
+=======
+    print("result " + str(result))
+  def row_cursor(self, cursor):
+>>>>>>> 5a3c7c29c3f5bb78202a2542dbfd51cc65c963f4
     response = []
-    for row in cursor: 
+    for row in cursor:
       print row
       response.append(
         {
@@ -51,16 +56,16 @@ class DB(object):
       )
     return response
 
-  def get_favorites(self): 
+  def get_favorites(self):
     data = self.cursor.execute("select * from user_favorites;")
     # print(str(self.cursor.fetchall()))
 
     return self.cursor.fetchall()
-  
+
   def create_favorites_table(self):
     try:
       query = """
-          CREATE TABLE user_favorites 
+          CREATE TABLE user_favorites
           (
             place_id BIGINT NOT NULL AUTO_INCREMENT,
             place_name VARCHAR(45) NOT NULL,
@@ -68,7 +73,7 @@ class DB(object):
             PRIMARY KEY (`place_id`)
           )
         """
-      
+
       self.cursor.execute(query)
       query = "INSERT INTO user_favorites (place_name, place_location) VALUES (\"Ithaca Falls\", \"3 miles south from west\")"
       print("query" + query)
@@ -76,79 +81,6 @@ class DB(object):
 
     except Exception as e: print e
 
-  def delete_task_table(self):
-    self.conn.execute("""
-      DROP TABLE tasks;
-      """)
-    self.conn.commit()
-
-  def delete_all_task(self): 
-    self.conn.execute("""
-    DELETE FROM tasks;
-    """)
-    self.conn.commit()
-
-  def delete_task(self, id):
-    self.conn.execute(""" 
-      DELETE FROM tasks 
-      WHERE ID = (?);
-    """, [id])
-    self.conn.commit()
-
-  def insert_task_table(self, task): 
-    self.conn.execute("""
-      INSERT INTO tasks (DUE_DATE, DESCRIPTION, TAGS, CREATED_AT, ID, NAME)
-      VALUES (?,?,?,?,?,?);""", (task.due_date, task.description, task.tags, task.created_at, task.id, task.name))
-    self.conn.commit()
-
-  def get_all_tasks(self): 
-    cursor = self.conn.execute("select * from tasks;")
-    return self.row_cursor(cursor)
-
-
-  def get_task(self, id): 
-    cursor = self.conn.execute("""
-    Select * FROM tasks 
-    WHERE ID = (?)
-    """, [id])
-    return self.row_cursor(cursor)
-
-  def example_create_table(self):
-    """
-    Demonstrates how to make a table. Silently error-handles
-    (try-except) because the table might already exist.
-    """
-    try:
-      self.conn.execute("""
-        CREATE TABLE example
-        (ID INT PRIMARY KEY NOT NULL,
-        NAME TEXT NOT NULL,
-        ADDRESS CHAR(50) NOT NULL);
-      """)
-    except Exception as e: print e
-
-  def example_query(self):
-    """
-    Demonstrates how to execute a query.
-    """
-    cursor = self.conn.execute("""
-      SELECT * FROM example;
-    """)
-
-    for row in cursor:
-      print "ID = ", row[0]
-      print "NAME = ", row[1]
-      print "ADDRESS = ", row[2], "\n"
-
-  def example_insert(self):
-    """
-    Demonstrates how to perform an insert operation.
-    """
-    self.conn.execute("""
-      INSERT INTO example (ID,NAME,ADDRESS)
-      VALUES (1, "Joe", "Ithaca, NY");
-    """)
-    self.conn.commit()
 
 
 # Only <=1 instance of the DB driver

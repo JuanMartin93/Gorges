@@ -1,4 +1,6 @@
 # Gorges
 
 
-f u juan
+DB SET UP
+
+Able to create a db using mysql 
