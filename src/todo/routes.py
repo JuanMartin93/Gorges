@@ -8,16 +8,26 @@ import json
 
 @app.route('/favorites', methods=['GET'])
 def get_controller():
+  return jsonify("db.get_favorites()")
+
+
+@app.route('/restaurants', methods=['GET'])
+def get_controller2():
+  return jsonify("pinga")
+
+@app.route('/events', methods=['GET'])
+def get_controller3():
   return jsonify(db.get_favorites())
 
-# @app.route('/', methods=['GET'])
-# def index():
-#   return jsonify({"HELLO": "WORLD"})
+@app.route('/natural-attractions', methods=['GET'])
+def get_controlle4():
+  return jsonify(db.get_favorites())
 
-# @app.route('/tasks/all', methods=['DELETE'])
-# def delete_all_controller(): 
-#   db.delete_all_task()
-#   return jsonify({"success": "true"})
+
+@app.route('/tasks/all', methods=['DELETE'])
+def delete_all_controller(): 
+  db.delete_all_task()
+  return jsonify({"success": "true"})
 
 
 

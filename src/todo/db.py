@@ -33,9 +33,8 @@ class DB(object):
 
     self.cursor = mysql.connect().cursor()
 
-    result = self.create_favorites_table()
+    # result = self.create_favorites_table()
 
-    print("result " + str(result))
   def row_cursor(self, cursor): 
     response = []
     for row in cursor: 
