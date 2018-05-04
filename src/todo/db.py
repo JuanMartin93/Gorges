@@ -35,12 +35,8 @@ class DB(object):
 
     # result = self.create_favorites_table()
 
-<<<<<<< HEAD
   def row_cursor(self, cursor): 
-=======
-    print("result " + str(result))
-  def row_cursor(self, cursor):
->>>>>>> 5a3c7c29c3f5bb78202a2542dbfd51cc65c963f4
+
     response = []
     for row in cursor:
       print row
