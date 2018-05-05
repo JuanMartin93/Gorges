@@ -1,9 +1,8 @@
 import os
 import json
 import sqlite3
-from todo.models import Task
-from flaskext.mysql import MySQL
 from todo import app
+from flaskext.mysql import MySQL
 
 # From: https://goo.gl/YzypOI
 def singleton(cls):
@@ -35,7 +34,7 @@ class DB(object):
 
     # result = self.create_favorites_table()
 
-  def row_cursor(self, cursor): 
+  def row_cursor(self, cursor):
 
     response = []
     for row in cursor:
